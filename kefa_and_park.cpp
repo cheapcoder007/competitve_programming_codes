@@ -1,0 +1,38 @@
+#include <bits/stdc++.h>
+using namespace std;
+int tree[100000 + 1][3], cat_status[100000 + 1], cats[100000 + 1];
+int main() {
+        int n, m, i, a, b, result = 0;
+        //vector < int > cats(n + 2, 0), cat_status(n + 2, 0);
+        //vector < vector < int > > tree;
+        cin >> n >> m;
+       // tree.assign(n + 2, vector < int > (3, 0));
+        for(i = 1; i < n + 1; i++)
+	       cin >> cats[i];
+        for(i = 0; i < n - 1; i++) {
+	       cin >> a >> b;
+	       if(!tree[a][1])
+		      tree[a][1] = 1;
+	       else
+		      tree[a][2] = 1;
+	       tree[b][0] = a;
+        }
+        cat_status[1] = cats[1];
+        for(i = 2; i <= n; i++) {
+	       if(cats[i] || cat_status[tree[i][0]] > m) {
+		      cat_status[i] += cat_status[tree[i][0]];
+		      cat_status[i] += cats[i];
+	       }
+        }
+        if(!tree[1][1] && !tree[1][2]) {
+	       cout << "0" << endl;
+	       return 0;
+        }
+        for(i = 1; i <= n; i++) {
+	       if(!tree[i][1] && !tree[i][2] && cat_status[i] <= m) {
+		      result++;
+	       }
+        }
+        cout << result << endl;
+        return 0;
+}
